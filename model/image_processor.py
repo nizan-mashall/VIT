@@ -6,7 +6,7 @@ class processor:
    
     def _image_scaling(self):
         self.img.show()
-        print('Hey')
+        print(self.img.shape)
         return
     
     def _split_to_patches(self, img):
