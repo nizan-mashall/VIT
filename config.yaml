@@ -1,0 +1,7 @@
+processor:
+  patch_size: 16
+  image_height: 224
+  image_width: 224
+
+paths:
+  image_path: "demo_image.png"

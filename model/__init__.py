@@ -1,1 +1,1 @@
-from .image_processor import processor
+from .image_processor import ImageProcessor
