@@ -19,9 +19,10 @@ class ImageProcessor:
     def _split_to_patches(self):
         transform = transforms.ToTensor()
         tensor_img = transform(self.img).unsqueeze(0)   # unsqueeze adding the batch dim
-        print(tensor_img.shape)
+        #print(tensor_img.shape)
         tensor_img = rearrange(tensor_img, 'b c (h p1) (w p2) -> b (h w) (p1 p2 c)',p1 = self.patch_size, p2 = self.patch_size)
-        print(tensor_img.shape)
+        #print(tensor_img.shape)
+
 
 
 
