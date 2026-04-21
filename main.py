@@ -1,5 +1,6 @@
 from PIL import Image
 from model import ImageProcessor
+from model import PatchEmbedding
 import yaml
 import torch
 
@@ -19,6 +20,7 @@ print(f"Opening the image: {IMG_PATH}, in resulotion of: ({IMG_HEIGHT}/{IMG_WIDT
 img = Image.open(IMG_PATH).convert('RGB')
 
 image_processor = ImageProcessor(img, IMG_HEIGHT, IMG_WIDTH, PATCH_SIZE)
-image_processor._image_scaling()
-image_processor._split_to_patches()
-
+img_tensor = image_processor.image_Processing()
+pixel2embedding = PatchEmbedding(img_tensor, IMG_HEIGHT, IMG_WIDTH, PATCH_SIZE)
+img_embedding = pixel2embedding(img_tensor)
+print(f"the embeddind size: {img_embedding.shape}")

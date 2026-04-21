@@ -2,6 +2,8 @@ import numpy as np
 import torch
 from torchvision import transforms
 from einops import rearrange
+import torch.nn as nn
+import torch.nn.functional as f
 
 class ImageProcessor:
     def __init__(self, img, h, w, patch_size):
@@ -22,9 +24,9 @@ class ImageProcessor:
         #print(tensor_img.shape)
         tensor_img = rearrange(tensor_img, 'b c (h p1) (w p2) -> b (h w) (p1 p2 c)',p1 = self.patch_size, p2 = self.patch_size)
         #print(tensor_img.shape)
-
-
-
-
-        return
+        return tensor_img
+    
+    def image_Processing(self):
+        self.img = self._image_scaling()
+        return self._split_to_patches()
     
