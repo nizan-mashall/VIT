@@ -14,6 +14,7 @@ IMG_PATH = config['paths']['image_path']
 IMG_HEIGHT = config['processor']['image_height']
 IMG_WIDTH = config['processor']['image_width']
 PATCH_SIZE = config['processor']['patch_size']
+BATCH_SIZE = config['training']['batch_size']
 
 print(f"Opening the image: {IMG_PATH}, in resulotion of: ({IMG_HEIGHT}/{IMG_WIDTH})")
 
@@ -21,6 +22,5 @@ img = Image.open(IMG_PATH).convert('RGB')
 
 image_processor = ImageProcessor(img, IMG_HEIGHT, IMG_WIDTH, PATCH_SIZE)
 img_tensor = image_processor.image_Processing()
-pixel2embedding = PatchEmbedding(img_tensor, IMG_HEIGHT, IMG_WIDTH, PATCH_SIZE)
+pixel2embedding = PatchEmbedding(img_tensor, IMG_HEIGHT, IMG_WIDTH, PATCH_SIZE, BATCH_SIZE)
 img_embedding = pixel2embedding(img_tensor)
-print(f"the embeddind size: {img_embedding.shape}")
