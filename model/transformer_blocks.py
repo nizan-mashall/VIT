@@ -3,7 +3,7 @@ import torch.nn as nn
 
 class Attention(nn.Module):
     def __init__(self, dim, n_heads, dropout_rate):
-        super.__init__()
+        super().__init__()
         self.n_heads = n_heads
         self.attention = nn.MultiheadAttention(embed_dim=dim, num_heads=self.n_heads, dropout=dropout_rate, batch_first = True)
 
@@ -13,7 +13,7 @@ class Attention(nn.Module):
     
 class FeedForward(nn.Sequential):
     def __init__(self, dim, hidden_dim, dropout_rate = 0):
-        super.__init__(
+        super().__init__(
         nn.Linear(dim, hidden_dim),
         nn.GELU(),
         nn.Dropout(dropout_rate),
@@ -23,7 +23,7 @@ class FeedForward(nn.Sequential):
 
 class ResidualAdd():
     def __init__(self, fn):
-        super.__init__()
+        super().__init__()
         self.fn = fn
 
     def forward(self, x, **kwargs):
@@ -34,7 +34,7 @@ class ResidualAdd():
     
 class PreNorm():
     def __init__(self, dim, fn):
-        super.__init__()
+        super().__init__()
         self.dim = dim
         self.fn = fn
 
