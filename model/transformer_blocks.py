@@ -21,7 +21,7 @@ class FeedForward(nn.Sequential):
         nn.Dropout(dropout_rate)
         )
 
-class ResidualAdd():
+class ResidualAdd(nn.Module):
     def __init__(self, fn):
         super().__init__()
         self.fn = fn
@@ -29,15 +29,23 @@ class ResidualAdd():
     def forward(self, x, **kwargs):
         res = x
         x = self.fn(x, **kwargs)
-        x+=res
+        x = x + res
         return x
     
-class PreNorm():
+class PreNorm(nn.Module):
     def __init__(self, dim, fn):
         super().__init__()
-        self.dim = dim
+        self.norm = nn.LayerNorm(dim)
         self.fn = fn
 
     def forward(self, x, **kwargs):
         return self.fn(self.norm(x), **kwargs)
 
+class TransformerEncoder(nn.Sequential):
+    def __init__(self, depth, dim , n_heads, dropout_rate, hidden_dim):
+        super().__init__(*[
+            nn.Sequential(
+                ResidualAdd(PreNorm(dim, Attention(dim, n_heads, dropout_rate))),
+                ResidualAdd(PreNorm(dim, FeedForward(dim, hidden_dim, dropout_rate)))
+                  ) for _ in range(depth)
+        ])
