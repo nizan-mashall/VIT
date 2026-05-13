@@ -4,42 +4,21 @@ from model import PatchEmbedding
 from model import TransformerEncoder
 import yaml
 import torch
+from data_loader import CIFAR_data_loader
 
 if __name__ == "__main__":
-    # Parameters
-    batch_size = 8
-    seq_length = 64    # e.g., 8x8 patches
-    embedding_dim = 128
-    depth = 4
-    heads = 8
-    mlp_dim = 256
+    # 1. Initialize the loaders
+    train_loader, test_loader = CIFAR_data_loader(batch_size=32)
 
-    # 1. Create a dummy input tensor [Batch, Sequence, Features]
-    x = torch.randn(batch_size, seq_length, embedding_dim)
-    print(f"Input shape: {x.shape}")
-
-    # 2. Initialize your Transformer
-    model = TransformerEncoder(
-        depth=depth, 
-        dim=embedding_dim, 
-        n_heads=heads, 
-        dropout_rate=0.1, 
-        hidden_dim=mlp_dim
-    )
-
-    # 3. Pass data through
+    # 2. Try to grab the first batch
     try:
-        output = model(x)
-        print(f"Output shape: {output.shape}")
+        images, labels = next(iter(train_loader))
         
-        # 4. Verify shapes match
-        if x.shape == output.shape:
-            print("✅ Shape Test Passed! The Transformer preserved the dimensions.")
-        else:
-            print("❌ Shape Test Failed! Input and Output dimensions differ.")
-            
+        print("✅ Success! Data loaded correctly.")
+        print(f"Batch images shape: {images.shape}") # Should be [32, 3, 224, 224]
+        print(f"Batch labels shape: {labels.shape}") # Should be [32]
+        print(f"First 5 labels: {labels[:5]}")
+        
     except Exception as e:
-        print(f"❌ Execution Failed with error: {e}")
-
-    output.mean().backward()
-    print("✅ Backward pass successful!")
+        print("❌ Error detected:")
+        print(e)
