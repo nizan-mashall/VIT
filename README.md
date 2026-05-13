@@ -5,9 +5,10 @@ Steps:
 4. Flatten the patches               V
 5. Add positional encoding           V
 6. Add class token                   V
-7. Input to Transformer
-8. Use MLP head for multi class 
-9. Add loss function 
-10. add train function
-11. load dataset
-12. test
+7. modify the code to use dataloader instead of single image
+8. Input to Transformer
+9. Use MLP head for multi class 
+10. Add loss function 
+11. add train function
+12. load dataset
+13. test
