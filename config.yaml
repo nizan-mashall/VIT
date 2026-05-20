@@ -4,7 +4,7 @@ processor:
   image_width: 224
   
 training:
-  batch_size: 1
+  batch_size: 32
 
 paths:
   image_path: "demo_image.png"

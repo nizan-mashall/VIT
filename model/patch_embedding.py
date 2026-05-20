@@ -1,24 +1,23 @@
 import torch
 import torch.nn as nn
-class PatchEmbedding(nn.Module):
-    def __init__(self, img, h, w, patch_size, batch_size):
-        super().__init__()
-        self.h = h
-        self.w = w
-        self.patch_size = patch_size
-        embedding_dim = 768
-        self.batch_size = batch_size
-        self.cls_token = nn.Parameter(torch.randn(1, 1, embedding_dim))
-        self.positional_encoding = nn.Parameter(torch.randn(1, 197, 768))
-        input_dim = 3 * patch_size**2
-        self.projection = nn.Linear(input_dim, embedding_dim)
+from einops import rearrange
 
-    def forward(self,img):
+class PatchEmbedding(nn.Module):
+    def __init__(self, in_channels, img_size = 224, patch_size = 16 , embedding_dim = 768):
+        super().__init__()
+        self.patch_size = patch_size
+        self.projection = nn.Conv2d(in_channels, embedding_dim, kernel_size=patch_size, stride=patch_size)
+
+        self.num_patches = (img_size // patch_size) ** 2
+        self.cls_token = nn.Parameter(torch.zeros(1, 1, embedding_dim))
+        self.positional_encoding = nn.Parameter(torch.zeros(1, self.num_patches + 1, embedding_dim))
+
+    def forward(self, x):
         
-        img = self.projection(img)
-        current_batch_size = img.shape[0]
-        cls_token = self.cls_token.expand(current_batch_size, -1, -1)
-        positional_encoding = self.positional_encoding.expand(current_batch_size, -1, -1)
-        img = torch.cat([cls_token, img], dim = 1)
-        img = img + positional_encoding
-        return img
+        x = self.projection(x)
+        x = rearrange(x, 'b c h w -> b (h w) c')
+        batch_size = x.shape[0]
+        cls_token = self.cls_token.expand(batch_size, -1, -1)
+        x = torch.cat((cls_token, x), dim = 1)
+        x = x + self.positional_encoding
+        return x
