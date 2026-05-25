@@ -7,7 +7,7 @@ from data_loader import CIFAR_data_loader
 from model import VisionTransformer
 import os
 
-CHECKPOINT_DIR = '/users/ogal/nmashall/VIT/checkpoint'
+CHECKPOINT_DIR = '/code/checkpoints'
 os.makedirs(CHECKPOINT_DIR, exist_ok=True)
 
 def train(BATCH_SIZE = 32, EPOCHS = 10):
@@ -30,7 +30,7 @@ def train(BATCH_SIZE = 32, EPOCHS = 10):
     optimizer = optim.AdamW(model.parameters(), lr=3e-4, weight_decay=1e-3)
 
     best_acc = 0.0
-    
+
     for epoch in range(EPOCHS):
         model.train()
         running_loss = 0.0

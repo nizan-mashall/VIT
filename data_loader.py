@@ -14,8 +14,8 @@ def CIFAR_data_loader(batch_size = 32):
     )
     ])
 
-    train_dataset = datasets.CIFAR10(root = '.\data', train = True, download = False, transform = transform)
-    test_dataset = datasets.CIFAR10(root = '.\data', train = False, download = False, transform = transform)
+    train_dataset = datasets.CIFAR10(root = '/code/data', train = True, download = False, transform = transform)
+    test_dataset = datasets.CIFAR10(root = '/code/data', train = False, download = False, transform = transform)
 
     train_loader = DataLoader(train_dataset, batch_size = batch_size, shuffle = True)
     test_loader = DataLoader(test_dataset, batch_size = batch_size, shuffle = False)
